@@ -18,9 +18,10 @@ public class TopicDAO {
             e.printStackTrace();
             System.exit(2);
         }
-
+        
+/**********     need to add user and password    *************/
         String conName = "jdbc:postgresql://localhost:5432/diary";
-        try(Connection con = DriverManager.getConnection(conName, "postgres", "AcademyMY")) {
+        try(Connection con = DriverManager.getConnection(conName, user, password)) {
 
             addToDatabase(con, "Aihe1", "kertaa ihan kaikki.");
 
