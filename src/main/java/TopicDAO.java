@@ -1,7 +1,13 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+/*
+Ohjelma ei vielä toimi full stackina. Back toimii omanaan, ei vielä keskustele frontin kanssa.
+req.open mm ei vielä määritelty JavaScriptissä. Jdbc toimii omanaan eli tallettaa topiceja tietokantaan
+ja hakee sieltä kaikki konsoliin.
+ */
+
+import javax.xml.transform.Result;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TopicDAO {
 
@@ -19,10 +25,16 @@ public class TopicDAO {
             System.exit(2);
         }
 
+        //tämä kommentoitu osa salasanoista on GitHubissa
+        //**********     need to add user and password    *************
         String conName = "jdbc:postgresql://localhost:5432/diary";
-        try(Connection con = DriverManager.getConnection(conName, "postgres", "AcademyMY")) {
+        try(Connection con = DriverManager.getConnection(conName, user, password)) {
+
 
             addToDatabase(con, "Aihe1", "kertaa ihan kaikki.");
+            addToDatabase(con, "Aihe2", "kertaa kaikki.");
+            addToDatabase(con, "Aihe3", "kertaa.");
+            System.out.println(listTopics(con));
 
         } catch (SQLException e) {
             System.out.println("SQL exception " + e.getMessage());
@@ -43,5 +55,23 @@ public class TopicDAO {
                 System.out.println("Lisäys ei onnistunut.");
             }
         }
+    }
+
+    public List<Topic> listTopics(Connection con) throws SQLException {
+        String sql = "select id, title, description from topic";
+        ResultSet rs;
+        List<Topic> topics = new ArrayList<>();
+        try(PreparedStatement stat = con.prepareStatement(sql)) {
+            rs = stat.executeQuery();
+            while(rs.next()) {
+                Topic top = new Topic(rs.getString("title"), rs.getString("description"));
+                topics.add(top);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ääskuuäl exception");
+            e.printStackTrace();
+        }
+        return topics;
     }
 }

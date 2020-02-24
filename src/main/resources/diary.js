@@ -1,3 +1,8 @@
+/*
+Ohjelma ei vielä toimi full stackina. Front toimii omanaan, ei vielä keskustele jbdc:n tai tietokannan kanssa.
+req.open mm ei vielä määritelty.
+ */
+
 const list = document.getElementById("list"); //se mihin koko roska tulostetaan
 const side = document.getElementById("side"); //pikkuinfo -tulostus
 
@@ -12,6 +17,7 @@ var req = new XMLHttpRequest();
 
 req.onreadystatechange = function () {
     if(req.readyState === 4) {
+        if(req.)
         var jason = JSON.parse();
 
     }
